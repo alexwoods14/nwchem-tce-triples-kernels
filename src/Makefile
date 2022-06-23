@@ -1,10 +1,10 @@
 ACTIVE   =
 ACTIVE  += -DDO_S1
-ACTIVE  += -DDO_D1
-ACTIVE  += -DDO_D2
+#ACTIVE  += -DDO_D1
+#ACTIVE  += -DDO_D2
 #ACTIVE  += -DDO_C_KERNELS
 #ACTIVE  += -DDO_BLAS_KERNELS
-ACTIVE  += -DDO_STDPAR_KERNELS
+#ACTIVE  += -DDO_STDPAR_KERNELS
 #ACTIVE  += -DDO_TARGET_KERNELS
 #ACTIVE  += -DDO_ACC_KERNELS
 ACTIVE  += -DDEBUG
@@ -19,7 +19,8 @@ OPT = -DOMP_COLLAPSE_LEVEL=$(OMP_COLLAPSE_LEVEL)
 FAT_STACK = -Wl,-stack_size -Wl,100000000
 
 ifeq ($(TARGET),NVHPC)
-    ACTIVE  += -DDO_CUTENSOR_KERNELS
+    ACTIVE  += -DDO_ACC_KERNELS
+#    ACTIVE  += -DDO_CUTENSOR_KERNELS
     CC       = nvc
     FC       = nvfortran
     OPT     += -DUSE_CUDA_UM -cuda
@@ -33,7 +34,7 @@ ifeq ($(TARGET),NVHPC)
     OPT     += -cuda
     OPT     += -cudalib=cublas,curand,cutensor -DUSE_CUBLAS
     #OPT     += -cudaver=11.4
-    OPT     += -Minfo=accel,mp,vect
+#    OPT     += -Minfo=accel,mp,vect
     OPT     += -g
     ASM      = -S -fsource-asm -fcode-asm
     CFLAGS   = $(OPT) -c99 $(ACTIVE)
@@ -46,7 +47,7 @@ ifeq ($(TARGET),NVHPC)
     LD       = $(CC)
     LDFLAGS  = $(CFLAGS)
     LIBS     = -fortranlibs
-    LIBS    += /opt/nvidia/hpc_sdk/Linux_x86_64/21.5/compilers/lib/libblas.a
+    LIBS    += /opt/nvidia/hpc_sdk/Linux_x86_64/22.3/compilers/lib/libblas.a
     LIBS    += -lcublas
 endif
 
@@ -94,6 +95,22 @@ ifeq ($(TARGET),GCC)
     CC       = gcc-11
     FC       = gfortran-11
     OPT     += -O3 -fopenmp
+    CFLAGS   = $(OPT) -std=c99 $(ACTIVE)
+    FFLAGS   = $(OPT) -cpp
+    CFLAGS  += -DFORTRAN_INTEGER_SIZE=4
+    LD       = $(FC)
+    LDFLAGS  = $(FFLAGS)
+    #LIBS     = -L/usr/lib64/atlas/ -lptf77blas -latlas
+    LIBS      = -lblas
+    #LIBS     = -framework Accelerate -lgfortran
+endif
+
+ifeq ($(TARGET),GCC-ACC)
+    ACTIVE  += -DDO_ACC_KERNELS
+    CC       = gcc
+    FC       = gfortran
+    OPT     += -Ofast -fopenacc -fopt-info
+#    OPT			+= -fopenmp
     CFLAGS   = $(OPT) -std=c99 $(ACTIVE)
     FFLAGS   = $(OPT) -cpp
     CFLAGS  += -DFORTRAN_INTEGER_SIZE=4
