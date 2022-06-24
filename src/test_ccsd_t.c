@@ -1186,6 +1186,8 @@ int main(int argc, char * argv[])
         long long totalflops = 0;
         acc_zero_(&tilesize, &tilesize, &tilesize, &tilesize, &tilesize, &tilesize, t3a);
         ttt0 = omp_get_wtime();
+// #pragma acc enter data copyin(t3a, t1, v2)
+#pragma acc enter data copyin(t3a[0:tile6], t1[0:tile2], v2[0:tile4])
 #ifdef DO_S1
         if (kernel<0 || kernel==1) {
             tt0 = omp_get_wtime();
@@ -1408,6 +1410,9 @@ int main(int argc, char * argv[])
             totalflops += 2*tile7;
         }
 #endif
+// #pragma acc exit data copyout(t3a, t1, v2)
+#pragma acc exit data copyout(t3a[0:tile6], t1[0:tile2], v2[0:tile4])
+
         ttt1 = omp_get_wtime();
         dt = ttt1-ttt0;
         printf("%d: %s time = %lf s GF/s = %lf \n", i, "total", dt, (1e-9*totalflops)/dt );
