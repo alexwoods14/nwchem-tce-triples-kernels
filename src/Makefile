@@ -1,7 +1,7 @@
 ACTIVE   =
 ACTIVE  += -DDO_S1
-#ACTIVE  += -DDO_D1
-#ACTIVE  += -DDO_D2
+ACTIVE  += -DDO_D1
+ACTIVE  += -DDO_D2
 #ACTIVE  += -DDO_C_KERNELS
 #ACTIVE  += -DDO_BLAS_KERNELS
 #ACTIVE  += -DDO_STDPAR_KERNELS
@@ -9,7 +9,7 @@ ACTIVE  += -DDO_S1
 #ACTIVE  += -DDO_ACC_KERNELS
 ACTIVE  += -DDEBUG
 
-TARGET := NVHPC
+TARGET := GCC-ACC
 
 # Intel Fortran throws the "cannot simd" warning for 3 and 4...
 OMP_COLLAPSE_LEVEL=3
@@ -118,7 +118,8 @@ ifeq ($(TARGET),GCC-ACC)
     LDFLAGS  = $(FFLAGS)
     #LIBS     = -L/usr/lib64/atlas/ -lptf77blas -latlas
     LIBS      = -lblas
-    #LIBS     = -framework Accelerate -lgfortran
+#    LIBS     += -lcuda
+		#LIBS     = -framework Accelerate -lgfortran
 endif
 
 ifeq ($(TARGET),MAC-CLANG)
