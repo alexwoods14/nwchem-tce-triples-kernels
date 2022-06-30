@@ -16,7 +16,7 @@ void cutensor_driver(int reps, int kernel, int tilesize,
                     const double * pT1, const double * pT2, const double * pV2, double * pT3);
 
 /* how many times to iterate */
-const int reps = 5;
+const int reps = 1;
 
 /* threshold to print an error message */
 const double thresh = 1.0e-6;
