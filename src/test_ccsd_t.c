@@ -1187,7 +1187,7 @@ int main(int argc, char * argv[])
         acc_zero_(&tilesize, &tilesize, &tilesize, &tilesize, &tilesize, &tilesize, t3a);
         ttt0 = omp_get_wtime();
 // #pragma acc enter data copyin(t3a, t1, v2)
-#pragma acc enter data copyin(t3a[0:tile6], t1[0:tile2], v2[0:tile4])
+        #pragma acc enter data copyin(t3a[0:tile6], t1[0:tile2], t2[0:tile4], v2[0:tile4])
 #ifdef DO_S1
         if (kernel<0 || kernel==1) {
             tt0 = omp_get_wtime();
@@ -1411,7 +1411,7 @@ int main(int argc, char * argv[])
         }
 #endif
 // #pragma acc exit data copyout(t3a, t1, v2)
-#pragma acc exit data copyout(t3a[0:tile6], t1[0:tile2], v2[0:tile4])
+#pragma acc exit data copyout(t3a[0:tile6], t1[0:tile2], t2[0:tile4], v2[0:tile4])
 
         ttt1 = omp_get_wtime();
         dt = ttt1-ttt0;
