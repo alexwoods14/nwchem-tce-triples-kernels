@@ -3,7 +3,7 @@
       integer h3d,h2d,h1d,p6d,p5d,p4d
       integer h3,h2,h1,p6,p5,p4
       double precision triplesx(h3d,h2d,h1d,p6d,p5d,p4d)
-!$acc parallel loop collapse(6)
+!$acc parallel loop vector_length(32) gang vector collapse(6)
       do p4=1,p4d
       do p5=1,p5d
       do p6=1,p6d
@@ -31,6 +31,7 @@ c
       double precision triplesx(h3d,h2d,h1d,p6d,p5d,p4d)
       double precision t1sub(p4d,h1d)
       double precision v2sub(h3d,h2d,p6d,p5d)
+c !$acc parallel loop vector_length(32) gang vector collapse(6)
 !$acc parallel loop collapse(6)
       do p4=1,p4d
       do p5=1,p5d
@@ -58,7 +59,7 @@ c
       double precision triplesx(h3d,h1d,h2d,p6d,p5d,p4d)
       double precision t1sub(p4d,h1d)
       double precision v2sub(h3d,h2d,p6d,p5d)
-!$acc parallel loop collapse(6)
+!$acc parallel loop vector_length(32) gang vector collapse(6)
       do p4=1,p4d
       do p5=1,p5d
       do p6=1,p6d
@@ -85,7 +86,7 @@ c
       double precision triplesx(h1d,h3d,h2d,p6d,p5d,p4d)
       double precision t1sub(p4d,h1d)
       double precision v2sub(h3d,h2d,p6d,p5d)
-!$acc parallel loop collapse(6)
+!$acc parallel loop vector_length(32) gang vector collapse(6)
       do p4=1,p4d
       do p5=1,p5d
       do p6=1,p6d
@@ -112,7 +113,7 @@ c
       double precision triplesx(h3d,h2d,h1d,p6d,p4d,p5d)
       double precision t1sub(p4d,h1d)
       double precision v2sub(h3d,h2d,p6d,p5d)
-!$acc parallel loop collapse(6)
+!$acc parallel loop vector_length(32) gang vector collapse(6)
       do p5=1,p5d
       do p4=1,p4d
       do p6=1,p6d
@@ -139,7 +140,7 @@ c
       double precision triplesx(h3d,h1d,h2d,p6d,p4d,p5d)
       double precision t1sub(p4d,h1d)
       double precision v2sub(h3d,h2d,p6d,p5d)
-!$acc parallel loop collapse(6)
+!$acc parallel loop vector_length(32) gang vector collapse(6)
       do p5=1,p5d
       do p4=1,p4d
       do p6=1,p6d
@@ -166,7 +167,7 @@ c
       double precision triplesx(h1d,h3d,h2d,p6d,p4d,p5d)
       double precision t1sub(p4d,h1d)
       double precision v2sub(h3d,h2d,p6d,p5d)
-!$acc parallel loop collapse(6)
+!$acc parallel loop vector_length(32) gang vector collapse(6)
       do p5=1,p5d
       do p4=1,p4d
       do p6=1,p6d
@@ -193,7 +194,7 @@ c
       double precision triplesx(h3d,h2d,h1d,p4d,p6d,p5d)
       double precision t1sub(p4d,h1d)
       double precision v2sub(h3d,h2d,p6d,p5d)
-!$acc parallel loop collapse(6)
+!$acc parallel loop vector_length(32) gang vector collapse(6)
       do p5=1,p5d
       do p6=1,p6d
       do p4=1,p4d
@@ -220,7 +221,7 @@ c
       double precision triplesx(h3d,h1d,h2d,p4d,p6d,p5d)
       double precision t1sub(p4d,h1d)
       double precision v2sub(h3d,h2d,p6d,p5d)
-!$acc parallel loop collapse(6)
+!$acc parallel loop vector_length(32) gang vector collapse(6)
       do p5=1,p5d
       do p6=1,p6d
       do p4=1,p4d
@@ -247,7 +248,7 @@ c
       double precision triplesx(h1d,h3d,h2d,p4d,p6d,p5d)
       double precision t1sub(p4d,h1d)
       double precision v2sub(h3d,h2d,p6d,p5d)
-!$acc parallel loop collapse(6)
+!$acc parallel loop vector_length(32) gang vector collapse(6)
       do p5=1,p5d
       do p6=1,p6d
       do p4=1,p4d
