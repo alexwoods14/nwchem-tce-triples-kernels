@@ -474,13 +474,14 @@ c
       double precision triplesx(h3d,h2d,h1d,p5d,p6d,p4d)
       double precision t2sub(h7d,p4d,p5d,h1d)
       double precision v2sub(h3d,h2d,p6d,h7d)
-!$acc parallel loop collapse(6)
+!$acc parallel loop vector_length(32) gang vector collapse(6)
       do p4=1,p4d
       do p6=1,p6d
       do p5=1,p5d
       do h1=1,h1d
       do h2=1,h2d
       do h3=1,h3d
+!$acc loop seq
       do h7=1,h7d
        triplesx(h3,h2,h1,p5,p6,p4)=triplesx(h3,h2,h1,p5,p6,p4)
      1   + t2sub(h7,p4,p5,h1)*v2sub(h3,h2,p6,h7)
@@ -646,6 +647,7 @@ c
       double precision t2sub(p7d,p4d,h1d,h2d)
       double precision t2tmp(p7d,h2d,h1d,p4d)
       double precision v2sub(p7d,h3d,p6d,p5d)
+!$acc data create(t2tmp)
 !$acc parallel loop collapse(4)
       do h2=1,h2d
       do h1=1,h1d
@@ -676,6 +678,7 @@ c
       enddo
       enddo
 !$acc end parallel loop
+!$acc end data
       return
       end
 c
