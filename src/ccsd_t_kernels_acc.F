@@ -326,7 +326,7 @@ c
       end
 c
       subroutine acc_sd_t_d1_3(h3d,h2d,h1d,p6d,p5d,p4d,h7d,
-     2                     triplesx,t2sub,v2sub)
+     2                     triplesx,t2sub,v2sub,t2tmp)
       IMPLICIT NONE
       integer h3d,h2d,h1d,p6d,p5d,p4d,h7d
       integer h3,h2,h1,p6,p5,p4,h7
@@ -426,7 +426,7 @@ c
       end
 c
       subroutine acc_sd_t_d1_6(h3d,h2d,h1d,p6d,p5d,p4d,h7d,
-     2                     triplesx,t2sub,v2sub)
+     2                     triplesx,t2sub,v2sub,t2tmp)
       IMPLICIT NONE
       integer h3d,h2d,h1d,p6d,p5d,p4d,h7d
       integer h3,h2,h1,p6,p5,p4,h7
@@ -527,7 +527,7 @@ c
       end
 c
       subroutine acc_sd_t_d1_9(h3d,h2d,h1d,p6d,p5d,p4d,h7d,
-     2                     triplesx,t2sub,v2sub)
+     2                     triplesx,t2sub,v2sub,t2tmp)
       IMPLICIT NONE
       integer h3d,h2d,h1d,p6d,p5d,p4d,h7d
       integer h3,h2,h1,p6,p5,p4,h7
@@ -598,7 +598,7 @@ c
       end
 c
       subroutine acc_sd_t_d2_2(h3d,h2d,h1d,p6d,p5d,p4d,p7d,
-     2                     triplesx,t2sub,v2sub)
+     2                     triplesx,t2sub,v2sub,t2tmp)
       IMPLICIT NONE
       integer h3d,h2d,h1d,p6d,p5d,p4d,p7d
       integer h3,h2,h1,p6,p5,p4,p7
@@ -640,7 +640,7 @@ c
       end
 c
       subroutine acc_sd_t_d2_3(h3d,h2d,h1d,p6d,p5d,p4d,p7d,
-     2                     triplesx,t2sub,v2sub)
+     2                     triplesx,t2sub,v2sub,t2tmp)
       IMPLICIT NONE
       integer h3d,h2d,h1d,p6d,p5d,p4d,p7d
       integer h3,h2,h1,p6,p5,p4,p7
@@ -648,7 +648,6 @@ c
       double precision t2sub(p7d,p4d,h1d,h2d)
       double precision t2tmp(p7d,h2d,h1d,p4d)
       double precision v2sub(p7d,h3d,p6d,p5d)
-!$acc data create(t2tmp)
 !$acc parallel loop collapse(4)
       do h2=1,h2d
       do h1=1,h1d
@@ -679,7 +678,6 @@ c
       enddo
       enddo
 !$acc end parallel loop
-!$acc end data
       return
       end
 c
@@ -713,7 +711,7 @@ c
       end
 c
       subroutine acc_sd_t_d2_5(h3d,h2d,h1d,p6d,p5d,p4d,p7d,
-     2                     triplesx,t2sub,v2sub)
+     2                     triplesx,t2sub,v2sub,t2tmp)
       IMPLICIT NONE
       integer h3d,h2d,h1d,p6d,p5d,p4d,p7d
       integer h3,h2,h1,p6,p5,p4,p7
@@ -755,7 +753,7 @@ c
       end
 c
       subroutine acc_sd_t_d2_6(h3d,h2d,h1d,p6d,p5d,p4d,p7d,
-     2                     triplesx,t2sub,v2sub)
+     2                     triplesx,t2sub,v2sub,t2tmp)
       IMPLICIT NONE
       integer h3d,h2d,h1d,p6d,p5d,p4d,p7d
       integer h3,h2,h1,p6,p5,p4,p7
@@ -826,7 +824,7 @@ c
       end
 c
       subroutine acc_sd_t_d2_8(h3d,h2d,h1d,p6d,p5d,p4d,p7d,
-     2                     triplesx,t2sub,v2sub)
+     2                     triplesx,t2sub,v2sub,t2tmp)
       IMPLICIT NONE
       integer h3d,h2d,h1d,p6d,p5d,p4d,p7d
       integer h3,h2,h1,p6,p5,p4,p7
@@ -868,7 +866,7 @@ c
       end
 c
       subroutine acc_sd_t_d2_9(h3d,h2d,h1d,p6d,p5d,p4d,p7d,
-     2                     triplesx,t2sub,v2sub)
+     2                     triplesx,t2sub,v2sub,t2tmp)
       IMPLICIT NONE
       integer h3d,h2d,h1d,p6d,p5d,p4d,p7d
       integer h3,h2,h1,p6,p5,p4,p7
