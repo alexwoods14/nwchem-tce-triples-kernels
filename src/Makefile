@@ -8,12 +8,17 @@ ACTIVE  += -DDO_D2
 #ACTIVE  += -DDO_TARGET_KERNELS
 #ACTIVE  += -DDO_ACC_KERNELS
 #ACTIVE  += -DDEBUG
+#ACTIVE  += -DDO_OMP_KERNELS
 
 TARGET := GCC-ACC
+
 
 # Intel Fortran throws the "cannot simd" warning for 3 and 4...
 OMP_COLLAPSE_LEVEL=3
 OPT = -DOMP_COLLAPSE_LEVEL=$(OMP_COLLAPSE_LEVEL)
+
+OPT	+= -DACC_NUM_WORKERS=${ACC_NUM_WORKERS}
+OPT	+= -DACC_VECTOR_LENGTH=${ACC_VECTOR_LENGTH}
 
 # test_tce_sort6.x requires enlarged stack because Fortran
 FAT_STACK = -Wl,-stack_size -Wl,100000000
@@ -23,16 +28,17 @@ ifeq ($(TARGET),NVHPC)
 #    ACTIVE  += -DDO_CUTENSOR_KERNELS
     CC       = nvc
     FC       = nvfortran
-    OPT     += -DUSE_CUDA_UM -cuda
+#    OPT     += -DUSE_CUDA_UM -cuda
     OPT     += -O3 -g
     OPT     += -acc		# OpenACC
     #OPT     += -Mlarge_arrays   # OpenACC overflows 32b offsets
     OPT     += -mp		# OpenMP
     #OPT     += -target=multicore
-    OPT     += -target=gpu	# Offload to GPU
-    OPT     += -gpu=managed	# Heap allocations uses CUDA memory
-    OPT     += -cuda
-    OPT     += -cudalib=cublas,curand,cutensor -DUSE_CUBLAS
+#    OPT     += -target=gpu	# Offload to GPU
+		OPT     += -ta=tesla
+#    OPT     += -gpu=managed	# Heap allocations uses CUDA memory
+#    OPT     += -cuda
+#    OPT     += -cudalib=cublas,curand,cutensor -DUSE_CUBLAS
     #OPT     += -cudaver=11.4
     OPT     += -Minfo=accel,mp,vect
     OPT     += -g
@@ -40,15 +46,15 @@ ifeq ($(TARGET),NVHPC)
     CFLAGS   = $(OPT) -c99 $(ACTIVE)
     FFLAGS   = $(OPT) -cpp
     #FFLAGS  += -stdpar          # Fortran DO CONCURRENT
-    FFLAGS  += -stdpar=gpu
+#    FFLAGS  += -stdpar=gpu
     #FFLAGS  += -stdpar=multicore
     CFLAGS  += -DFORTRAN_INTEGER_SIZE=4
     CFLAGS  += -DUSE_GETTIMEOFDAY=1
     LD       = $(CC)
     LDFLAGS  = $(CFLAGS)
     LIBS     = -fortranlibs
-    LIBS    += /opt/nvidia/hpc_sdk/Linux_x86_64/22.3/compilers/lib/libblas.a
-    LIBS    += -lcublas
+#    LIBS    += /opt/nvidia/hpc_sdk/Linux_x86_64/22.3/compilers/lib/libblas.a
+#    LIBS    += -lcublas
 endif
 
 ifeq ($(TARGET),ROCM)

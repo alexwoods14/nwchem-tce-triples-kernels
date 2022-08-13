@@ -16,7 +16,7 @@ void cutensor_driver(int reps, int kernel, int tilesize,
                     const double * pT1, const double * pT2, const double * pV2, double * pT3);
 
 /* how many times to iterate */
-const int reps = 1;
+const int reps = 4;
 
 /* threshold to print an error message */
 const double thresh = 1.0e-6;
@@ -1188,7 +1188,7 @@ int main(int argc, char * argv[])
         acc_zero_(&tilesize, &tilesize, &tilesize, &tilesize, &tilesize, &tilesize, t3a);
         ttt0 = omp_get_wtime();
 // #pragma acc enter data copyin(t3a, t1, v2)
-        #pragma acc enter data create(t3a[0:tile6], scratch[0:4]) copyin(t1[0:tile2], t2[0:tile4], v2[0:tile4])
+        #pragma acc enter data create(t3a[0:tile6], scratch[0:tile4]) copyin(t1[0:tile2], t2[0:tile4], v2[0:tile4])
 #ifdef DO_S1
         if (kernel<0 || kernel==1) {
             tt0 = omp_get_wtime();
@@ -1664,6 +1664,8 @@ int main(int argc, char * argv[])
     }
 #endif // DO_TARGET_KERNELS
 
+#ifdef DO_OMP_KERNELS
+
     double * t3o = safemalloc( tile6*sizeof(double) );
     if (t3o==NULL) {
       printf("skipping Fortran OpenMP kernels because memory could not be allocated. \n");
@@ -1903,7 +1905,7 @@ int main(int argc, char * argv[])
         fflush(stdout);
       }
     }
-
+#endif
 
     double * t3r = safemalloc( tile6*sizeof(double) );
     if (t3r==NULL) {
@@ -2146,8 +2148,10 @@ int main(int argc, char * argv[])
     }
 
     printf("\n");
+#ifdef DO_OMP_KERNELS
     double diff_t3o = diff_array(tile6, t3r, t3o);
     printf("||t3o-t3r||_1 = %30.15lf %s\n", diff_t3o, diff_t3o > thresh ? "(FAIL)" : "");
+#endif
 #if DO_C_KERNELS
     double diff_t3c = diff_array(tile6, t3r, t3c);
     printf("||t3c-t3r||_1 = %30.15lf %s\n", diff_t3c, diff_t3c > thresh ? "(FAIL)" : "");
@@ -2168,8 +2172,10 @@ int main(int argc, char * argv[])
     printf("norm: t1 = %lf, t2 = %lf, v2 = %lf\n", n1, n2, n3);
     double n4r = norm_array(tile6, t3r);
     printf("norm: t3r = %lf\n", n4r);
+#ifdef DO_OMP_KERNELS
     double n4o = norm_array(tile6, t3o);
     printf("norm: t3o = %lf\n", n4o);
+#endif
 #if DO_C_KERNELS
     double n4c = norm_array(tile6, t3c);
     printf("norm: t3c = %lf\n", n4c);
@@ -2204,11 +2210,14 @@ int main(int argc, char * argv[])
     safefree(t3s);
 #endif
 
+#ifdef DO_OMP_KERNELS
     safefree(t3o);
+#endif
     safefree(t3r);
     safefree(v2);
     safefree(t2);
     safefree(t1);
+    safefree(scratch);
 
     printf("ALL DONE \n");
     fflush(stdout);
