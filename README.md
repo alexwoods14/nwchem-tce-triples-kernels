@@ -11,6 +11,8 @@ make TARGET=? -j8
 
 Set TARGET to one of the following:
 
+* NVHPC
+* GCC-ACC
 * CRAY-INTEL
 * CRAY-GCC
 * CRAY (Cray compilers)
